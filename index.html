@@ -1,213 +1,235 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YoungStar</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #d7e1ff, #e6d4ff, #f7e4ff);
-            background-size: 300% 300%;
-            padding: 24px 16px;
-            min-height: 100vh;
-            animation: bgMove 10s ease infinite;
-        }
-
-        @keyframes bgMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .card {
-            max-width: 420px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.55);
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255,255,255,0.4);
-            opacity: 0;
-            transform: translateY(24px);
-            animation: cardIn 0.9s ease forwards;
-        }
-
-        @keyframes cardIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .banner {
-            height: 220px;
-            background: linear-gradient(135deg, rgba(132, 160, 245, 0.85), rgba(166, 136, 232, 0.85));
-            position: relative;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-
-        .avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            position: absolute;
-            left: 24px;
-            bottom: -45px;
-            background: #e8e8e8;
-            object-fit: cover;
-        }
-
-        .info {
-            padding: 56px 24px 24px;
-        }
-
-        .name {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1d2129;
-            margin-bottom: 6px;
-        }
-
-        .id {
-            color: #86909c;
-            font-size: 15px;
-            margin-bottom: 16px;
-        }
-
-        .desc {
-            font-size: 15px;
-            color: #4e5969;
-            line-height: 1.65;
-            margin-bottom: 22px;
-        }
-
-        .follow-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            background: rgba(29, 33, 41, 0.8);
-            color: #fff;
-            border-radius: 999px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: 0.25s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .follow-btn:hover {
-            background: rgba(29, 33, 41, 0.92);
-            transform: translateY(-2px);
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px 0;
-            border-top: 1px solid rgba(242, 243, 245, 0.4);
-            border-bottom: 1px solid rgba(242, 243, 245, 0.4);
-            margin: 10px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-num {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1d2129;
-        }
-
-        .stat-text {
-            font-size: 13px;
-            color: #86909c;
-            margin-top: 3px;
-        }
-
-        .works-title {
-            padding: 16px 24px 8px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #1d2129;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            padding: 0 24px 24px;
-        }
-
-        .grid-item {
-            aspect-ratio: 1;
-            background: rgba(242, 243, 245, 0.5);
-            border-radius: 14px;
-            overflow: hidden;
-            transition: transform 0.25s ease;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .grid-item:hover {
-            transform: scale(1.04);
-        }
-
-        .grid-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跳一跳</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  overflow:hidden;
+  background:#1a1a2e;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+#game{
+  width:100vw;
+  height:100vh;
+  position:relative;
+}
+.block{
+  position:absolute;
+  background:linear-gradient(135deg,#4a69bd,#6a89cc);
+  border-radius:6px;
+}
+.player{
+  width:30px;
+  height:30px;
+  background:#f6b93b;
+  border-radius:50%;
+  position:absolute;
+  z-index:2;
+  box-shadow:0 0 12px #f6b93b88;
+}
+#score{
+  position:fixed;
+  top:24px;
+  left:24px;
+  color:#fff;
+  font-size:22px;
+  z-index:10;
+}
+#tip{
+  position:fixed;
+  top:60px;
+  left:24px;
+  color:#aaa;
+  font-size:14px;
+  z-index:10;
+}
+#over{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  z-index:20;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  gap:20px;
+}
+#over button{
+  padding:10px 24px;
+  border:none;
+  border-radius:999px;
+  background:#6a89cc;
+  color:white;
+  font-size:16px;
+}
+</style>
 </head>
 <body>
-    <div class="card">
-        <div class="banner">
-            <div class="avatar"></div>
-        </div>
+<div id="score">分数：0</div>
+<div id="tip">长按蓄力，松开跳跃</div>
+<div id="game"></div>
+<div id="over">
+  <div style="font-size:32px">游戏结束</div>
+  <div id="finalScore"></div>
+  <button onclick="restart()">重新开始</button>
+</div>
 
-        <div class="info">
-            <div class="name">YoungStar</div>
-            <div class="id">@haixin0903</div>
-            <div class="desc">
-                喜欢记录、探索有趣的东西，慢慢搭建属于自己的小空间✨
-            </div>
-            <button class="follow-btn">Visit Github</button>
-        </div>
+<script>
+const gameEl = document.getElementById('game');
+const scoreEl = document.getElementById('score');
+const overEl = document.getElementById('over');
+const finalScoreEl = document.getElementById('finalScore');
 
-        <div class="stat-row">
-            <div class="stat-item">
-                <div class="stat-num">28</div>
-                <div class="stat-text">关注</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">106</div>
-                <div class="stat-text">粉丝</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">9</div>
-                <div class="stat-text">作品</div>
-            </div>
-        </div>
+let blocks = [];
+let player = {x:0,y:0,vx:0,vy:0};
+let score = 0;
+let isPress = false;
+let pressStart = 0;
+let power = 0;
+let gameRun = true;
 
-        <div class="works-title">作品</div>
+const BLOCK_W = 70;
+const BLOCK_H = 18;
 
-        <div class="grid">
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-        </div>
-    </div>
+function newBlock(lastX,lastY){
+  const dx = (Math.random()>0.5?1:-1)*(60 + Math.random()*80);
+  const dy = (Math.random()>0.5?1:-1)*(60 + Math.random()*80);
+  return {
+    x: lastX + dx,
+    y: lastY + dy,
+    w: BLOCK_W,
+    h: BLOCK_H
+  }
+}
+
+function init(){
+  gameEl.innerHTML = '';
+  blocks = [];
+  score = 0;
+  scoreEl.innerText = '分数：0';
+  gameRun = true;
+  overEl.style.display = 'none';
+
+  let b0 = {x: window.innerWidth/2 - BLOCK_W/2, y: window.innerHeight/2, w:BLOCK_W, h:BLOCK_H};
+  blocks.push(b0);
+  renderBlock(b0);
+
+  player.x = b0.x + b0.w/2 - 15;
+  player.y = b0.y - 30;
+  renderPlayer();
+
+  let last = b0;
+  for(let i=0;i<6;i++){
+    let nb = newBlock(last.x, last.y);
+    blocks.push(nb);
+    renderBlock(nb);
+    last = nb;
+  }
+}
+
+function renderBlock(b){
+  const div = document.createElement('div');
+  div.className = 'block';
+  div.style.left = b.x + 'px';
+  div.style.top = b.y + 'px';
+  div.style.width = b.w + 'px';
+  div.style.height = b.h + 'px';
+  gameEl.appendChild(div);
+}
+
+function renderPlayer(){
+  let p = document.querySelector('.player');
+  if(!p){
+    p = document.createElement('div');
+    p.className = 'player';
+    gameEl.appendChild(p);
+  }
+  p.style.left = player.x + 'px';
+  p.style.top = player.y + 'px';
+}
+
+function getCurrentBlock(){
+  let cx = player.x + 15;
+  let cy = player.y + 15;
+  for(let b of blocks){
+    if(cx >= b.x && cx <= b.x+b.w && cy >= b.y-35 && cy <= b.y){
+      return b;
+    }
+  }
+  return null;
+}
+
+function jump(){
+  if(!gameRun) return;
+  const base = 0.12;
+  const p = power;
+  player.vy = -p * base;
+  player.vx = p * base * 0.45;
+}
+
+function loop(){
+  if(!gameRun) return;
+  const g = 0.4;
+  player.vy += g;
+  player.x += player.vx;
+  player.y += player.vy;
+  renderPlayer();
+
+  const onBlock = getCurrentBlock();
+  if(onBlock && player.vy>0){
+    player.y = onBlock.y - 30;
+    player.vx = 0;
+    player.vy = 0;
+    score +=1;
+    scoreEl.innerText = '分数：'+score;
+    // 生成新方块
+    let last = blocks[blocks.length-1];
+    let nb = newBlock(last.x, last.y);
+    blocks.push(nb);
+    renderBlock(nb);
+  }
+
+  // 掉下去
+  if(player.y > window.innerHeight + 100){
+    gameRun = false;
+    finalScoreEl.innerText = '本次得分：'+score;
+    overEl.style.display = 'flex';
+  }
+  requestAnimationFrame(loop);
+}
+
+function restart(){
+  init();
+}
+
+// 鼠标/触屏
+document.addEventListener('mousedown',()=>{
+  isPress=true; pressStart=Date.now();
+})
+document.addEventListener('mouseup',()=>{
+  if(!isPress) return;
+  isPress=false;
+  power = Math.min(Date.now()-pressStart, 1200);
+  jump();
+})
+document.addEventListener('touchstart',(e)=>{
+  e.preventDefault();
+  isPress=true; pressStart=Date.now();
+})
+document.addEventListener('touchend',(e)=>{
+  e.preventDefault();
+  if(!isPress) return;
+  isPress=false;
+  power = Math.min(Date.now()-pressStart, 1200);
+  jump();
+})
+
+init();
+loop();
+</script>
 </body>
 </html>
